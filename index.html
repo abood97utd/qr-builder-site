@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>QR Builder – Free QR Code Generator with Colors, Photo, 3D and Frames</title>
+<meta name="description" content="Create QR codes for any link or text in your browser. Custom colors and shapes, photo QR codes, a 3D view, 'Scan me' frames, built-in scan verification, and PNG, SVG, JPG, WEBP or PDF download. Free, no sign-up, nothing uploaded.">
+<meta name="robots" content="index,follow">
+<meta name="theme-color" content="#17213A">
+<link rel="canonical" href="https://YOUR-DOMAIN/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="QR Builder">
+<meta property="og:title" content="QR Builder – Free QR Code Generator">
+<meta property="og:description" content="Styled, photo, 3D and framed QR codes, verified scannable, downloadable in PNG, SVG, JPG, WEBP or PDF. Free and private.">
+<meta property="og:url" content="https://YOUR-DOMAIN/">
+<meta property="og:image" content="https://YOUR-DOMAIN/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="QR Builder – Free QR Code Generator">
+<meta name="twitter:description" content="Styled, photo, 3D and framed QR codes, verified scannable. Free and private.">
+<meta name="twitter:image" content="https://YOUR-DOMAIN/og-image.png">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"QR Builder","url":"https://YOUR-DOMAIN/","applicationCategory":"UtilitiesApplication","operatingSystem":"Any","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"Free browser-based QR code generator with custom colors and shapes, photo QR codes, a 3D view, 'Scan me' frames, built-in scan verification and PNG, SVG, JPG, WEBP or PDF export.","featureList":["QR code for any link or text","Custom colors, gradients and module shapes","Photo QR codes","3D QR view","Scan me frames","Scan verification","PNG, SVG, JPG, WEBP, PDF download","Share to WhatsApp, Telegram, X, Email"]}
+</script>
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2212%22%20fill%3D%22%2317213A%22/%3E%3Cg%20fill%3D%22%23fff%22%3E%3Crect%20x%3D%2212%22%20y%3D%2212%22%20width%3D%2211%22%20height%3D%2211%22%20rx%3D%222%22/%3E%3Crect%20x%3D%2226.5%22%20y%3D%2212%22%20width%3D%2211%22%20height%3D%2211%22%20rx%3D%222%22/%3E%3Crect%20x%3D%2241%22%20y%3D%2212%22%20width%3D%2211%22%20height%3D%2211%22%20rx%3D%222%22/%3E%3Crect%20x%3D%2212%22%20y%3D%2226.5%22%20width%3D%2211%22%20height%3D%2211%22%20rx%3D%222%22/%3E%3Crect%20x%3D%2241%22%20y%3D%2226.5%22%20width%3D%2211%22%20height%3D%2211%22%20rx%3D%222%22/%3E%3Crect%20x%3D%2212%22%20y%3D%2241%22%20width%3D%2211%22%20height%3D%2211%22%20rx%3D%222%22/%3E%3Crect%20x%3D%2226.5%22%20y%3D%2241%22%20width%3D%2211%22%20height%3D%2211%22%20rx%3D%222%22/%3E%3Crect%20x%3D%2241%22%20y%3D%2241%22%20width%3D%2211%22%20height%3D%2211%22%20rx%3D%222%22/%3E%3C/g%3E%3Ccircle%20cx%3D%2232%22%20cy%3D%2232%22%20r%3D%225.5%22%20fill%3D%22%232F4BFF%22/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jsQR/1.4.0/jsQR.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<style>
+:root{
+	--bg:#EEF1F7;--panel:#FFFFFF;--ink:#17213A;--muted:#6E7790;--line:#D8DEEA;
+	--accent:#2F4BFF;--accent-ink:#FFFFFF;--ok:#12855B;--warn:#B84A00;--field:#F5F7FB;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{margin:0;height:100%}
+body{font-family:Sora,system-ui,sans-serif;background:var(--bg);color:var(--ink);font-size:14px;line-height:1.5}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+.app{display:grid;grid-template-columns:380px 1fr;min-height:100vh}
+.side{background:var(--panel);border-right:1px solid var(--line);display:flex;flex-direction:column}
+.brand{padding:22px 24px 14px;display:flex;align-items:center;gap:12px}
+.brand h1{font-size:20px;font-weight:700;margin:0;letter-spacing:-.02em}
+.brand span{color:var(--muted);font-size:12px;display:block;font-weight:400}
+.logo{width:34px;height:34px;display:grid;grid-template-columns:repeat(3,1fr);gap:3px}
+.logo i{background:var(--ink);border-radius:2px}
+.logo i:nth-child(5){background:var(--accent);border-radius:50%}
+.tabs{display:flex;padding:0 16px;border-bottom:1px solid var(--line);gap:4px}
+.tabs button{flex:1;background:none;border:0;padding:12px 6px;border-bottom:2px solid transparent;color:var(--muted);font-weight:600}
+.tabs button[aria-selected=true]{color:var(--ink);border-bottom-color:var(--accent)}
+.pane{display:none;padding:20px 24px;gap:16px;flex-direction:column;overflow:auto}
+.pane.active{display:flex}
+label.f{display:flex;flex-direction:column;gap:6px;font-size:13px;color:var(--muted)}
+label.f>span:first-child{display:flex;justify-content:space-between}
+textarea,select,input[type=text]{background:var(--field);border:1px solid var(--line);border-radius:8px;padding:10px 12px;color:var(--ink);width:100%;outline:none}
+textarea:focus,select:focus,input:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+textarea{min-height:110px;resize:vertical}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.colors{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.color{display:flex;align-items:center;gap:8px;background:var(--field);border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-size:12px;color:var(--muted)}
+.color input{width:26px;height:26px;border:0;padding:0;background:none;border-radius:6px}
+.shapes{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.shapes button{background:var(--field);border:1px solid var(--line);border-radius:8px;height:56px;display:grid;place-items:center}
+.shapes button[aria-pressed=true]{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+.shapes svg{width:28px;height:28px;fill:var(--ink)}
+.eyes{grid-template-columns:repeat(3,1fr)}
+input[type=range]{width:100%;accent-color:var(--accent)}
+.toggle{display:flex;align-items:center;justify-content:space-between;gap:12px;color:var(--ink)}
+.toggle input{width:18px;height:18px;accent-color:var(--accent)}
+.drop{border:1.5px dashed var(--line);border-radius:10px;padding:22px;text-align:center;color:var(--muted);background:var(--field)}
+.drop.has{border-style:solid;color:var(--ink)}
+.drop input{display:none}
+.drop b{color:var(--accent)}
+.thumb{width:64px;height:64px;object-fit:cover;border-radius:8px;display:block;margin:0 auto 8px}
+.note{font-size:12px;color:var(--muted);margin:0}
+.side .footer{margin-top:auto;padding:14px 24px;font-size:12px;color:var(--muted);border-top:1px solid var(--line)}
+.footer summary{cursor:pointer;font-weight:600;color:var(--ink)}
+.footer h2{font-size:14px;margin:12px 0 4px;color:var(--ink)}
+.footer h3{font-size:12px;margin:10px 0 2px;color:var(--ink)}
+.footer p{margin:0;line-height:1.5}
+.stage{display:flex;flex-direction:column;align-items:center;padding:28px 24px;gap:18px;
+	background-image:radial-gradient(var(--line) 1px,transparent 1px);background-size:22px 22px}
+.frame{background:#fff;border-radius:16px;padding:18px;box-shadow:0 20px 50px -30px rgba(23,33,58,.45);width:min(560px,100%);position:relative}
+.frame canvas{display:block;width:100%;height:auto;border-radius:6px}
+#three{display:none;aspect-ratio:1;border-radius:6px;overflow:hidden;background:#fff;cursor:grab}
+#three canvas{width:100%!important;height:100%!important}
+.status{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--muted);min-height:24px}
+.status .dot{width:10px;height:10px;border-radius:50%;background:var(--line)}
+.status.ok{color:var(--ok)}.status.ok .dot{background:var(--ok)}
+.status.warn{color:var(--warn)}.status.warn .dot{background:var(--warn)}
+.actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;width:min(560px,100%)}
+.btn{background:var(--ink);color:#fff;border:0;border-radius:10px;padding:12px 18px;font-weight:600;display:flex;align-items:center;gap:8px}
+.btn.primary{background:var(--accent)}
+.btn.ghost{background:#fff;color:var(--ink);border:1px solid var(--line)}
+.btn svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.menu{position:relative}
+.sheet{position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px;display:none;min-width:220px;box-shadow:0 18px 40px -20px rgba(23,33,58,.5);z-index:5}
+.sheet.open{display:block}
+.sheet button{width:100%;text-align:left;background:none;border:0;padding:10px 12px;border-radius:8px;display:flex;justify-content:space-between;gap:12px}
+.sheet button:hover{background:var(--field)}
+.sheet button small{color:var(--muted)}
+.sheet .grp{font-size:11px;color:var(--muted);padding:6px 12px 2px}
+.viewbtns{position:absolute;top:28px;right:28px;display:none;gap:6px}
+.viewbtns button{background:#fff;border:1px solid var(--line);border-radius:8px;padding:6px 10px;font-size:12px;font-weight:600}
+.modal{position:fixed;inset:0;background:rgba(23,33,58,.55);display:none;place-items:center;z-index:20;padding:20px}
+.modal.open{display:grid}
+.modal .box{background:#fff;border-radius:14px;padding:18px;max-width:420px;width:100%;text-align:center}
+.modal img{width:100%;max-height:60vh;object-fit:contain;border-radius:8px;border:1px solid var(--line)}
+.modal p{font-size:13px;color:var(--muted)}
+.modal .row3{display:flex;gap:8px;justify-content:center;margin-top:8px}
+.presets{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.presets.two{grid-template-columns:repeat(2,1fr)}
+.presets button{font-size:13px}
+.presets button{background:var(--field);border:1px solid var(--line);border-radius:8px;padding:9px;font-weight:600}
+.presets button[aria-pressed=true]{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+.fix{background:var(--accent);color:#fff;border:0;border-radius:8px;padding:10px 12px;font-weight:600}
+#three{cursor:grab}#three.drag{cursor:grabbing}
+.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);background:var(--ink);color:#fff;padding:10px 16px;border-radius:10px;opacity:0;transition:.25s;pointer-events:none;font-size:13px}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+@media (max-width:900px){
+	.app{grid-template-columns:1fr}
+	.side{border-right:0;border-bottom:1px solid var(--line)}
+	.stage{order:-1;padding:20px 16px}
+	.frame{padding:12px}
+}
+@media (prefers-reduced-motion:reduce){.toast{transition:none}}
+</style>
+</head>
+<body>
+<noscript><p style="padding:20px;font-family:sans-serif">QR Builder needs JavaScript to generate QR codes in your browser. Please enable it and reload.</p></noscript>
+<div class="app">
+	<aside class="side">
+		<div class="brand">
+			<div class="logo"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+			<h1>QR Builder<span>Any text or link, styled, photo-based or 3D</span></h1>
+		</div>
+		<div class="tabs" role="tablist">
+			<button role="tab" aria-selected="true" data-tab="content">Content</button>
+			<button role="tab" aria-selected="false" data-tab="style">Style</button>
+			<button role="tab" aria-selected="false" data-tab="frame">Frame</button>
+			<button role="tab" aria-selected="false" data-tab="photo">Photo</button>
+			<button role="tab" aria-selected="false" data-tab="three">3D</button>
+		</div>
+
+		<section class="pane active" data-pane="content">
+			<label class="f"><span>Text or link</span>
+				<textarea id="text" placeholder="https://example.com or any text, Wi-Fi string, phone number…">abcdefghijklmnopqrstuvwxyz</textarea>
+			</label>
+			<div class="row">
+				<label class="f"><span>Error correction</span>
+					<select id="ecl">
+						<option value="L">Low – smallest code</option>
+						<option value="M">Medium</option>
+						<option value="Q">Quartile</option>
+						<option value="H" selected>High – best for styling</option>
+					</select>
+				</label>
+				<label class="f"><span>Quiet zone</span>
+					<select id="margin">
+						<option value="2">Tight (2)</option>
+						<option value="4" selected>Standard (4)</option>
+						<option value="6">Wide (6)</option>
+					</select>
+				</label>
+			</div>
+			<p class="note">Every change is re-decoded with a real scanner engine. The status under the preview tells you if the code reads back correctly.</p>
+		</section>
+
+		<section class="pane" data-pane="style">
+			<label class="f"><span>Module shape</span>
+				<div class="shapes" id="shapes">
+					<button data-v="square" aria-pressed="true" title="Square"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8"/><rect x="13" y="3" width="8" height="8"/><rect x="3" y="13" width="8" height="8"/><rect x="13" y="13" width="8" height="8"/></svg></button>
+					<button data-v="rounded" aria-pressed="false" title="Rounded"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="2.5"/><rect x="13" y="3" width="8" height="8" rx="2.5"/><rect x="3" y="13" width="8" height="8" rx="2.5"/><rect x="13" y="13" width="8" height="8" rx="2.5"/></svg></button>
+					<button data-v="dots" aria-pressed="false" title="Dots"><svg viewBox="0 0 24 24"><circle cx="7" cy="7" r="4"/><circle cx="17" cy="7" r="4"/><circle cx="7" cy="17" r="4"/><circle cx="17" cy="17" r="4"/></svg></button>
+					<button data-v="diamond" aria-pressed="false" title="Diamond"><svg viewBox="0 0 24 24"><path d="M7 2.5 11.5 7 7 11.5 2.5 7zM17 2.5 21.5 7 17 11.5 12.5 7zM7 12.5 11.5 17 7 21.5 2.5 17zM17 12.5 21.5 17 17 21.5 12.5 17z"/></svg></button>
+					<button data-v="leaf" aria-pressed="false" title="Leaf"><svg viewBox="0 0 24 24"><path d="M3 3h4a4 4 0 0 1 4 4v4H7a4 4 0 0 1-4-4zM13 3h4a4 4 0 0 1 4 4v4h-4a4 4 0 0 1-4-4zM3 13h4a4 4 0 0 1 4 4v4H7a4 4 0 0 1-4-4zM13 13h4a4 4 0 0 1 4 4v4h-4a4 4 0 0 1-4-4z"/></svg></button>
+				</div>
+			</label>
+			<label class="f"><span>Corner eyes</span>
+				<div class="shapes eyes" id="eyes">
+					<button data-v="square" aria-pressed="true" title="Square"><svg viewBox="0 0 24 24"><path d="M3 3h18v18H3zm3 3v12h12V6zm3 3h6v6H9z" fill-rule="evenodd"/></svg></button>
+					<button data-v="rounded" aria-pressed="false" title="Rounded"><svg viewBox="0 0 24 24"><path d="M7 3h10a4 4 0 0 1 4 4v10a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V7a4 4 0 0 1 4-4zm0 3a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1zm3 3h4a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1v-4a1 1 0 0 1 1-1z" fill-rule="evenodd"/></svg></button>
+					<button data-v="circle" aria-pressed="false" title="Circle"><svg viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 1 0 18 9 9 0 0 1 0-18zm0 3a6 6 0 1 0 0 12 6 6 0 0 0 0-12zm0 3a3 3 0 1 1 0 6 3 3 0 0 1 0-6z" fill-rule="evenodd"/></svg></button>
+				</div>
+			</label>
+			<div class="colors">
+				<label class="color"><input type="color" id="fg" value="#17213A">Modules</label>
+				<label class="color"><input type="color" id="eye" value="#17213A">Eyes</label>
+				<label class="color"><input type="color" id="bg" value="#FFFFFF">Background</label>
+			</div>
+			<label class="toggle"><span>Gradient on modules</span><input type="checkbox" id="grad"></label>
+			<div class="row" id="gradRow" hidden>
+				<label class="color"><input type="color" id="fg2" value="#2F4BFF">Second color</label>
+				<label class="f"><span>Direction</span>
+					<select id="gradDir"><option value="d">Diagonal</option><option value="h">Horizontal</option><option value="v">Vertical</option><option value="r">Radial</option></select>
+				</label>
+			</div>
+			<p class="note">Keep modules clearly darker than the background. The scan check will warn you if contrast drops too far.</p>
+		</section>
+
+		<section class="pane" data-pane="frame">
+			<label class="f"><span>Frame style</span>
+				<div class="presets two" id="frames">
+					<button data-v="none" aria-pressed="true">No frame</button>
+					<button data-v="bottom" aria-pressed="false">Label below</button>
+					<button data-v="top" aria-pressed="false">Label above</button>
+					<button data-v="bubble" aria-pressed="false">Speech bubble</button>
+					<button data-v="badge" aria-pressed="false">Badge on border</button>
+					<button data-v="corners" aria-pressed="false">Corner brackets</button>
+				</div>
+			</label>
+			<label class="f"><span>Frame text</span><input type="text" id="frameText" value="SCAN ME" maxlength="40"></label>
+			<div class="presets" id="frameQuick">
+				<button data-t="SCAN ME">Scan me</button>
+				<button data-t="SCAN TO ORDER">Scan to order</button>
+				<button data-t="SCAN TO PAY">Scan to pay</button>
+				<button data-t="MENU">Menu</button>
+				<button data-t="FOLLOW US">Follow us</button>
+				<button data-t="WI-FI">Wi-Fi</button>
+			</div>
+			<div class="colors">
+				<label class="color"><input type="color" id="frameColor" value="#17213A">Frame</label>
+				<label class="color"><input type="color" id="frameTextColor" value="#FFFFFF">Text</label>
+				<label class="color"><input type="color" id="frameBg" value="#FFFFFF">Behind code</label>
+			</div>
+			<label class="f"><span>Text size <em id="fsV">100%</em></span><input type="range" id="frameFont" min="60" max="150" value="100"></label>
+			<p class="note">The frame sits outside the quiet zone, so it never affects scanning. Frames are included in PNG, JPG, WEBP, SVG and PDF downloads; the 3D view shows the code alone.</p>
+		</section>
+
+		<section class="pane" data-pane="photo">
+			<label class="toggle"><span>Use a photo</span><input type="checkbox" id="usePhoto"></label>
+			<label class="drop" id="drop">
+				<input type="file" id="file" accept=".jpg,.jpeg,.png,.webp,.gif,.bmp">
+				<img id="thumb" class="thumb" alt="" hidden>
+				<div id="dropText">Drop an image here, paste it (Ctrl+V) or <b>browse</b></div>
+			</label>
+			<label class="f"><span>Placement</span>
+				<div class="presets" id="photoMode">
+					<button data-v="halftone" aria-pressed="true">Behind the code</button>
+					<button data-v="logo" aria-pressed="false">In the centre</button>
+					<button data-v="tint" aria-pressed="false">Inside modules</button>
+				</div>
+			</label>
+			<div id="halftoneOpts">
+				<label class="f"><span>Dot size <em id="dotV">75%</em></span><input type="range" id="dot" min="45" max="100" value="75"></label>
+				<label class="f"><span>Photo lightness <em id="fadeV">45%</em></span><input type="range" id="fade" min="0" max="100" value="45"></label>
+			</div>
+			<label class="f" id="logoOpts" hidden><span>Photo size <em id="logoV">22%</em></span><input type="range" id="logoSize" min="12" max="28" value="22"></label>
+			<label class="toggle"><span>Keep photo in color</span><input type="checkbox" id="colorPhoto" checked></label>
+			<button class="fix" id="fixBtn">Make it scannable</button>
+			<p class="note">Behind the code: the photo is lightened and the code sits on top of it. Inside modules: the photo is only visible through the dark modules – always scannable. In the centre: a classic logo QR. "Make it scannable" auto-tunes the sliders until a real scanner decodes it.</p>
+		</section>
+
+		<section class="pane" data-pane="three">
+			<label class="toggle"><span>Show 3D view</span><input type="checkbox" id="use3d"></label>
+			<label class="f"><span>Camera</span>
+				<div class="presets" id="cams">
+					<button data-v="top" aria-pressed="false">Top (scan)</button>
+					<button data-v="angle" aria-pressed="true">3/4 view</button>
+					<button data-v="side" aria-pressed="false">Side (tree)</button>
+				</div>
+			</label>
+			<label class="f"><span>Tree height <em id="hV">6</em></span><input type="range" id="height" min="1" max="16" value="6"></label>
+			<label class="f"><span>Tiers <em id="tV">5</em></span><input type="range" id="tiers" min="2" max="9" value="5"></label>
+			<label class="toggle"><span>Slow spin</span><input type="checkbox" id="spin"></label>
+			<p class="note">Drag to rotate, scroll or pinch to zoom, double-click to reset. From the side the dark modules rise like a tiered tree; the Top camera is orthographic, so that snapshot is a flat, scannable QR. Download or share works from any angle.</p>
+		</section>
+
+		<div class="footer">
+			<details>
+				<summary>About QR Builder</summary>
+				<h2>Free QR code generator that runs in your browser</h2>
+				<p>QR Builder turns any link or text into a QR code you can style with custom colors, gradients and module shapes, place over a photo, view as a 3D model, and wrap in a frame such as “Scan me” or “Scan to pay”. Every design is decoded with a real scanner before you download it, so what you print will scan.</p>
+				<h3>How do I make a QR code?</h3>
+				<p>Paste a URL, Wi-Fi string, phone number or any text in the Content tab. The code updates instantly and the status line confirms it scans.</p>
+				<h3>Can I add my logo or photo?</h3>
+				<p>Yes. In the Photo tab you can place a picture behind the code, inside the dark modules, or in the centre like a logo. “Make it scannable” tunes the settings automatically.</p>
+				<h3>Which download formats are available?</h3>
+				<p>PNG, JPG, WEBP, SVG (vector) and PDF, from 512 up to 4096 pixels, plus direct sharing to WhatsApp, Telegram, X and email.</p>
+				<h3>Is it free and private?</h3>
+				<p>Yes. There is no sign-up and no server: your data and images never leave your device.</p>
+			</details>
+		</div>
+	</aside>
+
+	<main class="stage">
+		<div class="frame">
+			<canvas id="qr" width="1024" height="1024" aria-label="QR code preview"></canvas>
+			<div id="three"></div>
+			<div class="viewbtns" id="viewbtns"><button id="viewTop">Top</button><button id="viewAngle">3/4</button><button id="viewSide">Side</button></div>
+		</div>
+		<div class="status" id="status"><span class="dot"></span><span id="statusText">Rendering…</span></div>
+		<div class="actions">
+			<div class="menu">
+				<button class="btn primary" id="shareBtn"><svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg>Share</button>
+				<div class="sheet" id="shareSheet">
+					<button data-s="native">Share via device… <small>system</small></button>
+					<button data-s="whatsapp">WhatsApp</button>
+					<button data-s="telegram">Telegram</button>
+					<button data-s="x">X</button>
+					<button data-s="email">Email</button>
+					<button data-s="copyimg">Copy image <small>clipboard</small></button>
+					<button data-s="copytext">Copy content <small>text</small></button>
+				</div>
+			</div>
+			<div class="menu">
+				<button class="btn" id="dlBtn"><svg viewBox="0 0 24 24"><path d="M12 3v12M6 11l6 6 6-6M4 21h16"/></svg>Download</button>
+				<div class="sheet" id="dlSheet">
+					<div class="grp">Size</div>
+					<div style="display:flex;gap:6px;padding:2px 8px 8px">
+						<select id="dlSize" style="flex:1"><option value="512">512 px</option><option value="1024" selected>1024 px</option><option value="2048">2048 px</option><option value="4096">4096 px</option></select>
+					</div>
+					<div class="grp">Format</div>
+					<button data-d="png">PNG <small>transparent-safe</small></button>
+					<button data-d="jpg">JPG</button>
+					<button data-d="webp">WEBP</button>
+					<button data-d="svg">SVG <small>vector</small></button>
+					<button data-d="pdf">PDF</button>
+				</div>
+			</div>
+			<button class="btn ghost" id="printBtn"><svg viewBox="0 0 24 24"><path d="M6 9V3h12v6M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2M6 14h12v7H6z"/></svg>Print</button>
+		</div>
+	</main>
+</div>
+<div class="modal" id="modal"><div class="box"><img id="modalImg" alt="QR code"><p id="modalText"></p><div class="row3"><a class="btn ghost" id="modalOpen" target="_blank" rel="noopener">Open in new tab</a><button class="btn" id="modalClose">Close</button></div></div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+	qrcode.stringToBytes = qrcode.stringToBytesFuncs['UTF-8'];
+	const $ = id => document.getElementById(id);
+	const state = {
+		text:'abcdefghijklmnopqrstuvwxyz', ecl:'H', margin:4,
+		shape:'square', eye:'square', fg:'#17213A', eyeColor:'#17213A', bg:'#FFFFFF',
+		grad:false, fg2:'#2F4BFF', gradDir:'d',
+		usePhoto:false, img:null, imgSrc:'', photoMode:'halftone', dot:0.75, fade:0.45, logoSize:0.22, colorPhoto:true, photoCv:null,
+		use3d:false, height:6, tiers:5, spin:false,
+		frame:'none', frameText:'SCAN ME', frameColor:'#17213A', frameTextColor:'#FFFFFF', frameBg:'#FFFFFF', frameFont:1
+	};
+	let qr = null, verifyTimer = null;
+
+	// ---------- QR model ----------
+	function buildQR(){
+		const text = state.text.trim() || ' ';
+		const wantEc = (state.usePhoto && state.img) ? 'H' : state.ecl;
+		for(let ec of [wantEc,'Q','M','L']){
+			try{ const q = qrcode(0, ec); q.addData(text); q.make(); q.ec=ec; return q; }catch(e){}
+		}
+		return null;
+	}
+	const isFinder=(r,c,n)=>(r<7&&c<7)||(r<7&&c>=n-7)||(r>=n-7&&c<7);
+	const isStructural=(r,c,n)=>(r<9&&c<9)||(r<9&&c>=n-8)||(r>=n-8&&c<9)||r===6||c===6;
+
+	// ---------- photo preprocessing ----------
+	function preparePhoto(){
+		const im=state.img; if(!im){state.photoCv=null;return;}
+		const sc=Math.min(1,1400/Math.max(im.width,im.height)), cv=document.createElement('canvas');
+		cv.width=Math.max(1,Math.round(im.width*sc)); cv.height=Math.max(1,Math.round(im.height*sc));
+		const ctx=cv.getContext('2d'); if(!state.colorPhoto) ctx.filter='grayscale(1)'; ctx.drawImage(im,0,0,cv.width,cv.height); ctx.filter='none';
+		if(state.photoMode==='halftone'){
+			const id=ctx.getImageData(0,0,cv.width,cv.height), d=id.data, lo=110+state.fade*125, k=(255-lo)/255;
+			for(let i=0;i<d.length;i+=4){ d[i]=lo+d[i]*k; d[i+1]=lo+d[i+1]*k; d[i+2]=lo+d[i+2]*k; }
+			ctx.putImageData(id,0,0);
+		}else if(state.photoMode==='tint'){
+			const id=ctx.getImageData(0,0,cv.width,cv.height), d=id.data, hi=95, k=hi/255;
+			for(let i=0;i<d.length;i+=4){ d[i]=d[i]*k; d[i+1]=d[i+1]*k; d[i+2]=d[i+2]*k; }
+			ctx.putImageData(id,0,0);
+		}
+		state.photoCv=cv;
+	}
+	function drawCover(ctx,src,x,y,w,h){
+		const s=Math.max(w/src.width,h/src.height), dw=src.width*s, dh=src.height*s;
+		ctx.save(); ctx.beginPath(); ctx.rect(x,y,w,h); ctx.clip(); ctx.drawImage(src,x+(w-dw)/2,y+(h-dh)/2,dw,dh); ctx.restore();
+	}
+
+	// ---------- 2D drawing ----------
+	function roundRectPath(ctx,x,y,w,h,rad){
+		ctx.moveTo(x+rad,y); ctx.arcTo(x+w,y,x+w,y+h,rad); ctx.arcTo(x+w,y+h,x,y+h,rad);
+		ctx.arcTo(x,y+h,x,y,rad); ctx.arcTo(x,y,x+w,y,rad); ctx.closePath();
+	}
+	function modulePath(ctx,x,y,c,shape,scale){
+		const s=c*scale, o=(c-s)/2; x+=o; y+=o;
+		if(shape==='dots'){ ctx.moveTo(x+s,y+s/2); ctx.arc(x+s/2,y+s/2,s/2,0,Math.PI*2); }
+		else if(shape==='rounded'){ roundRectPath(ctx,x,y,s,s,s*0.3); }
+		else if(shape==='diamond'){ ctx.moveTo(x+s/2,y); ctx.lineTo(x+s,y+s/2); ctx.lineTo(x+s/2,y+s); ctx.lineTo(x,y+s/2); ctx.closePath(); }
+		else if(shape==='leaf'){ const r=s*0.5; ctx.moveTo(x,y+r); ctx.arcTo(x,y,x+r,y,r); ctx.lineTo(x+s,y); ctx.lineTo(x+s,y+s-r); ctx.arcTo(x+s,y+s,x+s-r,y+s,r); ctx.lineTo(x,y+s); ctx.closePath(); }
+		else { ctx.rect(x,y,s,s); }
+	}
+	function eyePath(ctx,x,y,c,style){
+		const o=7*c, i=5*c, k=3*c;
+		ctx.beginPath();
+		if(style==='circle'){
+			ctx.arc(x+o/2,y+o/2,o/2,0,Math.PI*2); ctx.moveTo(x+o/2+i/2,y+o/2); ctx.arc(x+o/2,y+o/2,i/2,0,Math.PI*2,true);
+			ctx.moveTo(x+o/2+k/2,y+o/2); ctx.arc(x+o/2,y+o/2,k/2,0,Math.PI*2);
+		}else if(style==='rounded'){
+			roundRectPath(ctx,x,y,o,o,o*0.28); roundRectPath(ctx,x+c,y+c,i,i,i*0.28); roundRectPath(ctx,x+2*c,y+2*c,k,k,k*0.28);
+		}else{
+			ctx.rect(x,y,o,o); ctx.rect(x+c,y+c,i,i); ctx.rect(x+2*c,y+2*c,k,k);
+		}
+	}
+	function makeFill(ctx,size){
+		if(!state.grad) return state.fg;
+		let g;
+		if(state.gradDir==='h') g=ctx.createLinearGradient(0,0,size,0);
+		else if(state.gradDir==='v') g=ctx.createLinearGradient(0,0,0,size);
+		else if(state.gradDir==='r') g=ctx.createRadialGradient(size/2,size/2,size*0.1,size/2,size/2,size*0.7);
+		else g=ctx.createLinearGradient(0,0,size,size);
+		g.addColorStop(0,state.fg); g.addColorStop(1,state.fg2); return g;
+	}
+	function drawQR(ctx,size){
+		if(!qr) return;
+		const n=qr.getModuleCount(), m=state.margin, c=size/(n+2*m), off=m*c, area=n*c;
+		const photo=state.usePhoto&&state.photoCv, mode=photo?state.photoMode:'none';
+		ctx.clearRect(0,0,size,size);
+		ctx.fillStyle=state.bg; ctx.fillRect(0,0,size,size);
+		if(mode==='halftone') drawCover(ctx,state.photoCv,off,off,area,area);
+		let fill=makeFill(ctx,size);
+		if(mode==='tint'){ fill=ctx.createPattern(coverCanvas(state.photoCv,area),'no-repeat'); const mt=new DOMMatrix().translate(off,off); fill.setTransform(mt); }
+		const baseScale = mode==='halftone' ? state.dot : (state.shape==='square'?1:0.92);
+		const shape = mode==='halftone' ? 'dots' : state.shape;
+		// light dots (halftone only)
+		if(mode==='halftone'){
+			ctx.fillStyle=state.bg; ctx.beginPath();
+			for(let r=0;r<n;r++)for(let col=0;col<n;col++){
+				if(qr.isDark(r,col)||isFinder(r,col,n)) continue;
+				const st=isStructural(r,col,n); modulePath(ctx,off+col*c,off+r*c,c,st?'square':'dots',st?1:baseScale*0.8);
+			}
+			ctx.fill();
+		}
+		// dark modules
+		ctx.fillStyle=fill; ctx.beginPath();
+		for(let r=0;r<n;r++)for(let col=0;col<n;col++){
+			if(isFinder(r,col,n)||!qr.isDark(r,col)) continue;
+			const st=mode==='halftone'&&isStructural(r,col,n);
+			modulePath(ctx,off+col*c,off+r*c,c,st?'square':shape,st?1:baseScale);
+		}
+		ctx.fill();
+		// eyes
+		ctx.fillStyle=state.bg;
+		[[0,0],[0,n-7],[n-7,0]].forEach(([r,col])=>ctx.fillRect(off+col*c,off+r*c,7*c,7*c));
+		ctx.fillStyle=mode==='tint'?fill:state.eyeColor;
+		[[0,0],[0,n-7],[n-7,0]].forEach(([r,col])=>{ eyePath(ctx,off+col*c,off+r*c,c,state.eye); ctx.fill('evenodd'); });
+		// centre logo
+		if(mode==='logo'){
+			const L=area*state.logoSize, pad=c*0.9, x=size/2-L/2, y=x;
+			ctx.fillStyle=state.bg; ctx.beginPath(); roundRectPath(ctx,x-pad,y-pad,L+2*pad,L+2*pad,c*1.2); ctx.fill();
+			ctx.save(); ctx.beginPath(); roundRectPath(ctx,x,y,L,L,c*0.8); ctx.clip(); drawCover(ctx,state.photoCv,x,y,L,L); ctx.restore();
+		}
+	}
+	function coverCanvas(src,area){
+		const cv=document.createElement('canvas'); cv.width=cv.height=Math.ceil(area); drawCover(cv.getContext('2d'),src,0,0,area,area); return cv;
+	}
+	// ---------- Frames ----------
+	function layout(W){
+		const b=W*0.05, band=W*0.17, f=state.frame, fs=W*0.085*state.frameFont, r=W*0.06;
+		if(f==='none') return {W,H:W,qx:0,qy:0,qs:W,b,band,fs,r};
+		if(f==='bottom') return {W,H:W+band,qx:b,qy:b,qs:W-2*b,b,band,fs,r,textY:W-b+(band+b)/2};
+		if(f==='top') return {W,H:W+band,qx:b,qy:band+b,qs:W-2*b,b,band,fs,r,textY:(band+b)/2+b/2};
+		if(f==='bubble') return {W,H:W+W*0.25,qx:0,qy:0,qs:W,b,band,fs,r,textY:W+W*0.155};
+		if(f==='badge') return {W,H:W+b*1.3,qx:b,qy:b,qs:W-2*b,b,band,fs:fs*0.85,r,textY:W-b*0.4};
+		return {W,H:W+band*0.9,qx:0,qy:0,qs:W,b,band,fs,r,textY:W+band*0.4}; // corners
+	}
+	const FONT='700 {fs}px Sora, "Segoe UI", Arial, sans-serif';
+	function textWidth(ctx,txt,fs){ ctx.font=FONT.replace('{fs}',fs); return ctx.measureText(txt).width; }
+	function rrFill(ctx,x,y,w,h,r,color){ ctx.fillStyle=color; ctx.beginPath(); roundRectPath(ctx,x,y,w,h,r); ctx.fill(); }
+	function drawFramed(ctx,W){
+		const L=layout(W), f=state.frame, txt=state.frameText.trim(), fc=state.frameColor, tc=state.frameTextColor;
+		ctx.clearRect(0,0,L.W,L.H);
+		if(f==='bottom'||f==='top'){
+			rrFill(ctx,0,0,L.W,L.H,L.r,fc);
+			rrFill(ctx,L.qx,L.qy,L.qs,L.qs,L.r*0.6,state.frameBg);
+		}else if(f==='bubble'){
+			rrFill(ctx,0,0,W,W,L.r*0.6,fc); rrFill(ctx,L.b*0.5,L.b*0.5,W-L.b,W-L.b,L.r*0.45,state.frameBg);
+			const bw=Math.min(W*0.92,Math.max(W*0.45,textWidth(ctx,txt,L.fs)+W*0.14)), bh=W*0.15, bx=(W-bw)/2, by=W+W*0.08;
+			ctx.fillStyle=fc; ctx.beginPath(); roundRectPath(ctx,bx,by,bw,bh,bh/2); ctx.fill();
+			ctx.beginPath(); ctx.moveTo(W/2-W*0.04,by+2); ctx.lineTo(W/2+W*0.04,by+2); ctx.lineTo(W/2,W+W*0.025); ctx.closePath(); ctx.fill();
+		}else if(f==='badge'){
+			rrFill(ctx,0,0,W,W,L.r,fc); rrFill(ctx,L.b,L.b,W-2*L.b,W-2*L.b,L.r*0.55,state.frameBg);
+			const pw=textWidth(ctx,txt,L.fs)+W*0.12, ph=L.fs*1.7, px=(W-pw)/2, py=L.textY-ph/2;
+			rrFill(ctx,px-L.b*0.35,py-L.b*0.35,pw+L.b*0.7,ph+L.b*0.7,ph,state.frameBg); rrFill(ctx,px,py,pw,ph,ph/2,fc);
+		}else if(f==='corners'){
+			ctx.fillStyle=state.frameBg; ctx.fillRect(0,0,W,W);
+		}
+		if(f==='none'){ drawQR(ctx,W); return L; }
+		const q=document.createElement('canvas'); q.width=q.height=Math.round(L.qs); drawQR(q.getContext('2d'),q.width);
+		if(f==='bottom'||f==='top'){ ctx.save(); ctx.beginPath(); roundRectPath(ctx,L.qx,L.qy,L.qs,L.qs,L.r*0.6); ctx.clip(); ctx.drawImage(q,L.qx,L.qy,L.qs,L.qs); ctx.restore(); }
+		else if(f==='badge'||f==='bubble'){ const p=f==='badge'?L.b:L.b*0.5; ctx.save(); ctx.beginPath(); roundRectPath(ctx,p,p,W-2*p,W-2*p,L.r*0.5); ctx.clip(); ctx.drawImage(q,L.qx,L.qy,L.qs,L.qs); ctx.restore(); }
+		else ctx.drawImage(q,L.qx,L.qy,L.qs,L.qs);
+		if(f==='corners'){
+			const len=W*0.16, w=L.b*0.7, o=w/2; ctx.strokeStyle=fc; ctx.lineWidth=w; ctx.lineCap='round'; ctx.lineJoin='round';
+			[[o,o,1,1],[W-o,o,-1,1],[o,W-o,1,-1],[W-o,W-o,-1,-1]].forEach(([x,y,sx,sy])=>{ ctx.beginPath(); ctx.moveTo(x,y+sy*len); ctx.lineTo(x,y); ctx.lineTo(x+sx*len,y); ctx.stroke(); });
+		}
+		if(txt){
+			ctx.fillStyle=(f==='corners')?fc:tc; ctx.font=FONT.replace('{fs}',L.fs); ctx.textAlign='center'; ctx.textBaseline='middle';
+			let fs=L.fs, maxW=(f==='bubble')?W*0.8:W*0.86; while(fs>W*0.03&&textWidth(ctx,txt,fs)>maxW) fs*=0.92; ctx.font=FONT.replace('{fs}',fs);
+			ctx.fillText(txt,W/2,L.textY);
+		}
+		return L;
+	}
+	function renderTo(size){ const L=layout(size), cv=document.createElement('canvas'); cv.width=size; cv.height=Math.round(L.H); drawFramed(cv.getContext('2d'),size); return cv; }
+	function svgFrame(W){
+		const L=layout(W), f=state.frame, txt=state.frameText.trim().replace(/[<>&]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;'}[c])), fc=state.frameColor, tc=state.frameTextColor, g=v=>+v.toFixed(2);
+		const est=(t,fs)=>t.length*fs*0.66;
+		let fs=L.fs, maxW=(f==='bubble')?W*0.8:W*0.86; while(fs>W*0.03&&est(txt,fs)>maxW) fs*=0.92;
+		const text=txt?`<text x="${g(W/2)}" y="${g(L.textY)}" text-anchor="middle" dominant-baseline="central" font-family="Sora,'Segoe UI',Arial,sans-serif" font-weight="700" font-size="${g(fs)}" fill="${f==='corners'?fc:tc}">${txt}</text>`:'';
+		let before='', after='', clip='';
+		if(f==='bottom'||f==='top'){ before=`<rect width="${g(L.W)}" height="${g(L.H)}" rx="${g(L.r)}" fill="${fc}"/><rect x="${g(L.qx)}" y="${g(L.qy)}" width="${g(L.qs)}" height="${g(L.qs)}" rx="${g(L.r*0.6)}" fill="${state.frameBg}"/>`; clip=`<rect x="${g(L.qx)}" y="${g(L.qy)}" width="${g(L.qs)}" height="${g(L.qs)}" rx="${g(L.r*0.6)}"/>`; }
+		else if(f==='bubble'){ const bw=Math.min(W*0.92,Math.max(W*0.45,est(txt,fs)+W*0.14)), bh=W*0.15, bx=(W-bw)/2, by=W+W*0.08;
+			before=`<rect width="${W}" height="${W}" rx="${g(L.r*0.6)}" fill="${fc}"/><rect x="${g(L.b*0.5)}" y="${g(L.b*0.5)}" width="${g(W-L.b)}" height="${g(W-L.b)}" rx="${g(L.r*0.45)}" fill="${state.frameBg}"/>`;
+			after=`<rect x="${g(bx)}" y="${g(by)}" width="${g(bw)}" height="${g(bh)}" rx="${g(bh/2)}" fill="${fc}"/><path d="M${g(W/2-W*0.04)} ${g(by+2)}L${g(W/2+W*0.04)} ${g(by+2)}L${g(W/2)} ${g(W+W*0.025)}Z" fill="${fc}"/>`;
+			clip=`<rect x="${g(L.b*0.5)}" y="${g(L.b*0.5)}" width="${g(W-L.b)}" height="${g(W-L.b)}" rx="${g(L.r*0.5)}"/>`; }
+		else if(f==='badge'){ const pw=est(txt,fs)+W*0.12, ph=fs*1.7, px=(W-pw)/2, py=L.textY-ph/2;
+			before=`<rect width="${W}" height="${W}" rx="${g(L.r)}" fill="${fc}"/><rect x="${g(L.b)}" y="${g(L.b)}" width="${g(W-2*L.b)}" height="${g(W-2*L.b)}" rx="${g(L.r*0.55)}" fill="${state.frameBg}"/>`;
+			after=`<rect x="${g(px-L.b*0.35)}" y="${g(py-L.b*0.35)}" width="${g(pw+L.b*0.7)}" height="${g(ph+L.b*0.7)}" rx="${g(ph)}" fill="${state.frameBg}"/><rect x="${g(px)}" y="${g(py)}" width="${g(pw)}" height="${g(ph)}" rx="${g(ph/2)}" fill="${fc}"/>`;
+			clip=`<rect x="${g(L.b)}" y="${g(L.b)}" width="${g(W-2*L.b)}" height="${g(W-2*L.b)}" rx="${g(L.r*0.5)}"/>`; }
+		else if(f==='corners'){ const len=W*0.16, w=L.b*0.7, o=w/2;
+			before=`<rect width="${W}" height="${W}" fill="${state.frameBg}"/>`;
+			after=[[o,o,1,1],[W-o,o,-1,1],[o,W-o,1,-1],[W-o,W-o,-1,-1]].map(([x,y,sx,sy])=>`<path d="M${g(x)} ${g(y+sy*len)}L${g(x)} ${g(y)}L${g(x+sx*len)} ${g(y)}" fill="none" stroke="${fc}" stroke-width="${g(w)}" stroke-linecap="round" stroke-linejoin="round"/>`).join(''); }
+		return {L,before,after:after+text,clip};
+	}
+
+
+	// ---------- SVG export ----------
+	function svgString(size){
+		const F=svgFrame(size); if(state.frame!=='none') size=F.L.qs;
+		const n=qr.getModuleCount(), m=state.margin, c=size/(n+2*m), off=m*c, area=n*c;
+		const photo=state.usePhoto&&state.photoCv, mode=photo?state.photoMode:'none', f=v=>+v.toFixed(2);
+		let defs='', fill=state.fg;
+		if(state.grad){
+			const stops=`<stop offset="0" stop-color="${state.fg}"/><stop offset="1" stop-color="${state.fg2}"/>`, d=state.gradDir;
+			defs += d==='r' ? `<radialGradient id="g" cx="50%" cy="50%" r="70%">${stops}</radialGradient>` : `<linearGradient id="g" x1="0" y1="0" x2="${d==='v'?0:1}" y2="${d==='h'?0:1}">${stops}</linearGradient>`;
+			fill='url(#g)';
+		}
+		const photoHref=photo?state.photoCv.toDataURL('image/png'):'';
+		let body=`<rect width="${size}" height="${size}" fill="${state.bg}"/>`;
+		if(mode==='halftone') body+=`<image href="${photoHref}" x="${f(off)}" y="${f(off)}" width="${f(area)}" height="${f(area)}" preserveAspectRatio="xMidYMid slice"/>`;
+		if(mode==='tint'){ defs+=`<pattern id="p" patternUnits="userSpaceOnUse" x="${f(off)}" y="${f(off)}" width="${f(area)}" height="${f(area)}"><image href="${photoHref}" width="${f(area)}" height="${f(area)}" preserveAspectRatio="xMidYMid slice"/></pattern>`; fill='url(#p)'; }
+		const baseScale = mode==='halftone' ? state.dot : (state.shape==='square'?1:0.92), shape=mode==='halftone'?'dots':state.shape;
+		const el=(x,y,s,sh)=>{
+			x=f(x);y=f(y);
+			if(sh==='dots') return `<circle cx="${f(x+s/2)}" cy="${f(y+s/2)}" r="${f(s/2)}"/>`;
+			if(sh==='rounded') return `<rect x="${x}" y="${y}" width="${f(s)}" height="${f(s)}" rx="${f(s*0.3)}"/>`;
+			if(sh==='diamond') return `<path d="M${f(x+s/2)} ${y}L${f(x+s)} ${f(y+s/2)}L${f(x+s/2)} ${f(y+s)}L${x} ${f(y+s/2)}Z"/>`;
+			if(sh==='leaf'){ const R=f(s*0.5); return `<path d="M${x} ${f(y+s*0.5)}A${R} ${R} 0 0 1 ${f(x+s*0.5)} ${y}H${f(x+s)}V${f(y+s*0.5)}A${R} ${R} 0 0 1 ${f(x+s*0.5)} ${f(y+s)}H${x}Z"/>`; }
+			return `<rect x="${x}" y="${y}" width="${f(s)}" height="${f(s)}"/>`;
+		};
+		let dark='', light='';
+		for(let r=0;r<n;r++)for(let col=0;col<n;col++){
+			if(isFinder(r,col,n)) continue;
+			const isD=qr.isDark(r,col); if(!isD&&mode!=='halftone') continue;
+			const st=mode==='halftone'&&isStructural(r,col,n), sc=st?1:(isD?baseScale:baseScale*0.8), s=c*sc, o=(c-s)/2;
+			const e=el(off+col*c+o,off+r*c+o,s,st?'square':(isD?shape:'dots'));
+			if(isD) dark+=e; else light+=e;
+		}
+		if(light) body+=`<g fill="${state.bg}">${light}</g>`;
+		body+=`<g fill="${fill}">${dark}</g>`;
+		const rr=(x,y,w,r)=>{ x=f(x);y=f(y);w=f(w); if(!r) return `M${x} ${y}h${w}v${w}h-${w}Z`; return `M${f(x+r)} ${y}h${f(w-2*r)}a${r} ${r} 0 0 1 ${r} ${r}v${f(w-2*r)}a${r} ${r} 0 0 1 -${r} ${r}h-${f(w-2*r)}a${r} ${r} 0 0 1 -${r} -${r}v-${f(w-2*r)}a${r} ${r} 0 0 1 ${r} -${r}Z`; };
+		const eyeFill=mode==='tint'?fill:state.eyeColor;
+		[[0,0],[0,n-7],[n-7,0]].forEach(([r,col])=>{
+			const x=off+col*c, y=off+r*c, O=7*c, I=5*c, K=3*c;
+			body+=`<rect x="${f(x)}" y="${f(y)}" width="${f(O)}" height="${f(O)}" fill="${state.bg}"/>`;
+			if(state.eye==='circle') body+=`<circle cx="${f(x+O/2)}" cy="${f(y+O/2)}" r="${f(3*c)}" fill="none" stroke="${eyeFill}" stroke-width="${f(c)}"/><circle cx="${f(x+O/2)}" cy="${f(y+O/2)}" r="${f(K/2)}" fill="${eyeFill}"/>`;
+			else { const q=state.eye==='rounded'?0.28:0; body+=`<path fill="${eyeFill}" fill-rule="evenodd" d="${rr(x,y,O,f(O*q))}${rr(x+c,y+c,I,f(I*q))}"/><path fill="${eyeFill}" d="${rr(x+2*c,y+2*c,K,f(K*q))}"/>`; }
+		});
+		if(mode==='logo'){
+			const L=area*state.logoSize, pad=c*0.9, x=size/2-L/2;
+			defs+=`<clipPath id="lc"><rect x="${f(x)}" y="${f(x)}" width="${f(L)}" height="${f(L)}" rx="${f(c*0.8)}"/></clipPath>`;
+			body+=`<rect x="${f(x-pad)}" y="${f(x-pad)}" width="${f(L+2*pad)}" height="${f(L+2*pad)}" rx="${f(c*1.2)}" fill="${state.bg}"/><image href="${photoHref}" x="${f(x)}" y="${f(x)}" width="${f(L)}" height="${f(L)}" preserveAspectRatio="xMidYMid slice" clip-path="url(#lc)"/>`;
+		}
+		if(state.frame==='none') return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${size} ${size}" width="${size}" height="${size}"><defs>${defs}</defs>${body}</svg>`;
+		const L=F.L, W=L.W, H=+L.H.toFixed(2);
+		if(F.clip) defs+=`<clipPath id="fc">${F.clip}</clipPath>`;
+		return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}"><defs>${defs}</defs>${F.before}<g transform="translate(${+L.qx.toFixed(2)} ${+L.qy.toFixed(2)})" ${F.clip?'clip-path="url(#fc)"':''}>${body}</g>${F.after}</svg>`;
+	}
+
+	// ---------- Scan verification ----------
+	function decodeNow(size){
+		if(typeof jsQR!=='function') return null;
+		const cv=renderTo(size), id=cv.getContext('2d').getImageData(0,0,cv.width,cv.height);
+		try{ return jsQR(id.data,cv.width,cv.height,{inversionAttempts:'dontInvert'}); }catch(e){ return null; }
+	}
+	function scans(){ const want=state.text.trim(); const a=decodeNow(600); if(!(a&&a.data===want)) return false; const b=decodeNow(400); return !!(b&&b.data===want); }
+	function verify(){
+		const st=$('status'), tx=$('statusText');
+		st.className='status'; tx.textContent='Checking scan…';
+		clearTimeout(verifyTimer);
+		verifyTimer=setTimeout(()=>{
+			if(typeof jsQR!=='function'){ tx.textContent='Scanner engine unavailable – could not verify.'; return; }
+			const info=' · version '+((qr.getModuleCount()-17)/4)+' · '+qr.ec+' error correction', want=state.text.trim();
+			const a=decodeNow(600);
+			if(!(a&&a.data===want)){ st.className='status warn'; tx.textContent=(state.usePhoto&&state.img)?'Not decodable yet – press "Make it scannable" in the Photo tab.':'Not decodable – increase contrast between modules and background.'; return; }
+			const b=decodeNow(400);
+			if(b&&b.data===want){ st.className='status ok'; tx.textContent='Scans correctly at two sizes'+info; }
+			else { st.className='status warn'; tx.textContent='Scans only when large. Use "Make it scannable" or increase dot size.'; }
+		},350);
+	}
+	function autoFix(){
+		if(!(state.usePhoto&&state.img)){ toast('Load a photo first'); return; }
+		if(state.photoMode!=='halftone'){ toast(state.photoMode==='logo'?'Try a smaller photo size.':'Inside-modules mode is always scannable.'); verify(); return; }
+		const steps=[]; for(let fd=state.fade; fd<=1.001; fd+=0.15) for(let dt=(fd===state.fade?state.dot:Math.min(state.dot,0.65)); dt<=1.001; dt+=0.08) steps.push([Math.min(1,dt),Math.min(1,fd)]);
+		const btn=$('fixBtn'); btn.disabled=true; let i=0;
+		const tick=()=>{
+			if(i>=steps.length){ finish(false); return; }
+			[state.dot,state.fade]=steps[i++]; preparePhoto();
+			btn.textContent='Testing '+i+'/'+steps.length+'…';
+			if(scans()) finish(true); else setTimeout(tick,0);
+		};
+		const finish=ok=>{
+			btn.disabled=false; btn.textContent='Make it scannable';
+			$('dot').value=Math.round(state.dot*100); $('dotV').textContent=Math.round(state.dot*100)+'%';
+			$('fade').value=Math.round(state.fade*100); $('fadeV').textContent=Math.round(state.fade*100)+'%';
+			rerender(); toast(ok?'Tuned: scans now':'Could not tune – switch to "Inside modules" or use a lighter photo');
+		};
+		setTimeout(tick,0);
+	}
+
+	// ---------- 3D ----------
+	let three=null;
+	function init3D(){
+		const el=$('three'), W=el.clientWidth||520;
+		const renderer=new THREE.WebGLRenderer({antialias:true,preserveDrawingBuffer:true,alpha:true});
+		renderer.setPixelRatio(Math.min(devicePixelRatio,2)); renderer.setSize(W,W); el.appendChild(renderer.domElement);
+		const scene=new THREE.Scene();
+		const persp=new THREE.PerspectiveCamera(32,1,0.1,600), ortho=new THREE.OrthographicCamera(-1,1,1,-1,0.1,600);
+		scene.add(new THREE.HemisphereLight(0xffffff,0x8a94aa,0.95));
+		const sun=new THREE.DirectionalLight(0xffffff,0.75); sun.position.set(30,60,20); scene.add(sun);
+		three={renderer,scene,persp,ortho,group:null,az:0.65,el:0.8,tAz:0.65,tEl:0.8,zoom:1,tZoom:1,drag:null,last:performance.now(),topLock:false};
+		const setCam=(az,el)=>{three.tAz=az;three.tEl=el;three.topLock=el>1.5;};
+		const presets={top:()=>setCam(0,Math.PI/2-0.0005),angle:()=>setCam(0.65,0.8),side:()=>setCam(0.35,0.12)};
+		three.presets=presets;
+		el.addEventListener('pointerdown',e=>{ three.drag={x:e.clientX,y:e.clientY,az:three.tAz,el:three.tEl}; el.classList.add('drag'); el.setPointerCapture(e.pointerId); markCam(null); });
+		el.addEventListener('pointermove',e=>{ if(!three.drag) return; const d=three.drag, w=el.clientWidth;
+			three.tAz=d.az-(e.clientX-d.x)/w*Math.PI*1.5; three.tEl=Math.min(Math.PI/2-0.0005,Math.max(0.05,d.el+(e.clientY-d.y)/w*Math.PI)); three.topLock=false; });
+		const up=()=>{ three.drag=null; el.classList.remove('drag'); };
+		el.addEventListener('pointerup',up); el.addEventListener('pointercancel',up);
+		el.addEventListener('wheel',e=>{ e.preventDefault(); three.tZoom=Math.min(2.4,Math.max(0.55,three.tZoom*(e.deltaY>0?1.08:0.93))); },{passive:false});
+		el.addEventListener('dblclick',()=>{ presets.angle(); three.tZoom=1; markCam('angle'); });
+		$('viewTop').onclick=()=>{presets.top();markCam('top');};
+		$('viewAngle').onclick=()=>{presets.angle();markCam('angle');};
+		$('viewSide').onclick=()=>{presets.side();markCam('side');};
+		new ResizeObserver(()=>{ const w=el.clientWidth; if(w) renderer.setSize(w,w); }).observe(el);
+		build3D(); loop();
+	}
+	function markCam(v){ $('cams').querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.v===v)); }
+	function build3D(){
+		if(!three||!qr) return;
+		if(three.group){ three.scene.remove(three.group); three.group.traverse(o=>{o.geometry&&o.geometry.dispose(); o.material&&o.material.dispose&&o.material.dispose();}); }
+		const n=qr.getModuleCount(), m=state.margin, g=new THREE.Group();
+		const base=new THREE.Mesh(new THREE.BoxGeometry(n+2*m,0.6,n+2*m),new THREE.MeshStandardMaterial({color:state.bg,roughness:0.9}));
+		base.position.y=-0.3; g.add(base);
+		let count=0; for(let r=0;r<n;r++)for(let c=0;c<n;c++) if(qr.isDark(r,c)) count++;
+		const inst=new THREE.InstancedMesh(new THREE.BoxGeometry(1,1,1),new THREE.MeshStandardMaterial({color:state.fg,roughness:0.55,metalness:0.05}),count);
+		const d=new THREE.Object3D(), half=n/2, R=Math.hypot(half,half), T=state.tiers, H=state.height;
+		let i=0;
+		for(let r=0;r<n;r++)for(let c=0;c<n;c++){
+			if(!qr.isDark(r,c)) continue;
+			const x=c-half+0.5, z=r-half+0.5, rad=Math.hypot(x,z)/R, tier=Math.min(T-1,Math.floor(rad*T));
+			const h=0.35+H*(1-tier/T)*(1-0.15*(rad*T-tier));
+			d.position.set(x,h/2,z); d.scale.set(1,h,1); d.updateMatrix(); inst.setMatrixAt(i++,d.matrix);
+		}
+		inst.instanceMatrix.needsUpdate=true; g.add(inst);
+		three.group=g; three.scene.add(g); three.span=n+2*m;
+	}
+	function activeCamera(){
+		const D=three.span*1.25*three.zoom, useOrtho=three.el>1.5;
+		const cam=useOrtho?three.ortho:three.persp;
+		if(useOrtho){ const s=three.span*0.55*three.zoom; cam.left=-s;cam.right=s;cam.top=s;cam.bottom=-s; cam.updateProjectionMatrix(); }
+		cam.position.set(D*Math.cos(three.el)*Math.sin(three.az),D*Math.sin(three.el),D*Math.cos(three.el)*Math.cos(three.az));
+		cam.up.set(0,1,0); cam.lookAt(0,0.5,0); return cam;
+	}
+	function loop(){
+		if(!three) return;
+		requestAnimationFrame(loop);
+		if(!state.use3d) return;
+		const now=performance.now(), dt=(now-three.last)/1000; three.last=now;
+		if(state.spin && !three.drag && !three.topLock) three.tAz+=dt*0.3;
+		three.az+=(three.tAz-three.az)*0.12; three.el+=(three.tEl-three.el)*0.12; three.zoom+=(three.tZoom-three.zoom)*0.12;
+		three.renderer.render(three.scene,activeCamera());
+	}
+
+	// ---------- Render orchestration ----------
+	function rerender(){
+		qr=buildQR();
+		if(!qr){ $('statusText').textContent='Content too long for a single QR code.'; return; }
+		const pc=$('qr'), L=layout(1024); if(pc.height!==Math.round(L.H)) pc.height=Math.round(L.H); drawFramed(pc.getContext('2d'),1024);
+		verify();
+		if(three) build3D();
+	}
+	function setMode3d(on){
+		state.use3d=on; $('use3d').checked=on;
+		$('qr').style.display=on?'none':'block';
+		$('three').style.display=on?'block':'none';
+		$('viewbtns').style.display=on?'flex':'none';
+		if(on && !three) init3D();
+	}
+
+	// ---------- Controls ----------
+	document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>{
+		document.querySelectorAll('.tabs button').forEach(x=>x.setAttribute('aria-selected',x===b));
+		document.querySelectorAll('.pane').forEach(p=>p.classList.toggle('active',p.dataset.pane===b.dataset.tab));
+		setMode3d(b.dataset.tab==='three');
+	});
+	let tTimer; $('text').oninput=e=>{ state.text=e.target.value; clearTimeout(tTimer); tTimer=setTimeout(rerender,200); };
+	$('ecl').onchange=e=>{state.ecl=e.target.value;rerender();};
+	$('margin').onchange=e=>{state.margin=+e.target.value;rerender();};
+	function pick(gridId,key,after){ const g=$(gridId); g.querySelectorAll('button').forEach(b=>b.onclick=()=>{ g.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x===b)); state[key]=b.dataset.v; after&&after(); rerender(); }); }
+	pick('shapes','shape'); pick('eyes','eye'); pick('frames','frame');
+	$('frameText').oninput=e=>{state.frameText=e.target.value;rerender();};
+	$('frameQuick').querySelectorAll('button').forEach(b=>b.onclick=()=>{ state.frameText=b.dataset.t; $('frameText').value=b.dataset.t; if(state.frame==='none'){ state.frame='bottom'; $('frames').querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x.dataset.v==='bottom')); } rerender(); });
+	$('frameColor').oninput=e=>{state.frameColor=e.target.value;rerender();};
+	$('frameTextColor').oninput=e=>{state.frameTextColor=e.target.value;rerender();};
+	$('frameBg').oninput=e=>{state.frameBg=e.target.value;rerender();};
+	$('frameFont').oninput=e=>{state.frameFont=e.target.value/100;$('fsV').textContent=e.target.value+'%';rerender();};
+	if(document.fonts&&document.fonts.ready) document.fonts.ready.then(()=>rerender());
+	pick('photoMode','photoMode',()=>{ $('halftoneOpts').hidden=state.photoMode!=='halftone'; $('logoOpts').hidden=state.photoMode!=='logo'; preparePhoto(); });
+	$('cams').querySelectorAll('button').forEach(b=>b.onclick=()=>{ if(!three) setMode3d(true); three.presets[b.dataset.v](); markCam(b.dataset.v); });
+	$('fg').oninput=e=>{state.fg=e.target.value;rerender();};
+	$('eye').oninput=e=>{state.eyeColor=e.target.value;rerender();};
+	$('bg').oninput=e=>{state.bg=e.target.value;rerender();};
+	$('fg2').oninput=e=>{state.fg2=e.target.value;rerender();};
+	$('gradDir').onchange=e=>{state.gradDir=e.target.value;rerender();};
+	$('grad').onchange=e=>{state.grad=e.target.checked;$('gradRow').hidden=!state.grad;rerender();};
+	$('usePhoto').onchange=e=>{state.usePhoto=e.target.checked; if(state.usePhoto&&!state.img) toast('Add a photo below'); rerender();};
+	$('dot').oninput=e=>{state.dot=e.target.value/100;$('dotV').textContent=e.target.value+'%';rerender();};
+	$('fade').oninput=e=>{state.fade=e.target.value/100;$('fadeV').textContent=e.target.value+'%';preparePhoto();rerender();};
+	$('logoSize').oninput=e=>{state.logoSize=e.target.value/100;$('logoV').textContent=e.target.value+'%';rerender();};
+	$('colorPhoto').onchange=e=>{state.colorPhoto=e.target.checked;preparePhoto();rerender();};
+	$('fixBtn').onclick=autoFix;
+	function loadFile(f){
+		if(!f||(f.type&&!f.type.startsWith('image/'))) return;
+		$('dropText').textContent='Loading photo…';
+		const url=URL.createObjectURL(f), im=new Image();
+		im.onload=()=>{
+			URL.revokeObjectURL(url);
+			const sc=Math.min(1,1200/Math.max(im.width,im.height)), cv=document.createElement('canvas');
+			cv.width=Math.max(1,Math.round(im.width*sc)); cv.height=Math.max(1,Math.round(im.height*sc));
+			cv.getContext('2d').drawImage(im,0,0,cv.width,cv.height);
+			state.img=cv; state.usePhoto=true; $('usePhoto').checked=true;
+			const th=document.createElement('canvas'); th.width=th.height=128; drawCover(th.getContext('2d'),cv,0,0,128,128);
+			$('thumb').src=th.toDataURL('image/jpeg',0.8); $('thumb').hidden=false;
+			$('dropText').innerHTML='Photo loaded · <b>replace</b>'; $('drop').classList.add('has');
+			preparePhoto(); rerender();
+		};
+		im.onerror=()=>{ URL.revokeObjectURL(url); $('dropText').textContent='Could not read that image – try a JPG or PNG.'; };
+		im.src=url;
+	}
+	$('file').onchange=e=>loadFile(e.target.files[0]);
+	const drop=$('drop');
+	drop.ondragover=e=>{e.preventDefault();drop.classList.add('has');};
+	drop.ondragleave=()=>{ if(!state.img) drop.classList.remove('has'); };
+	drop.ondrop=e=>{e.preventDefault();loadFile(e.dataTransfer.files[0]);};
+	document.addEventListener('paste',e=>{ const it=[...(e.clipboardData?.items||[])].find(i=>i.type.startsWith('image/')); if(it){ loadFile(it.getAsFile()); } });
+	$('use3d').onchange=e=>setMode3d(e.target.checked);
+	$('height').oninput=e=>{state.height=+e.target.value;$('hV').textContent=e.target.value;build3D();};
+	$('tiers').oninput=e=>{state.tiers=+e.target.value;$('tV').textContent=e.target.value;build3D();};
+	$('spin').onchange=e=>state.spin=e.target.checked;
+
+	// ---------- Menus / output ----------
+	function toggleSheet(id){ const s=$(id), open=!s.classList.contains('open'); document.querySelectorAll('.sheet').forEach(x=>x.classList.remove('open')); s.classList.toggle('open',open); }
+	$('shareBtn').onclick=e=>{e.stopPropagation();toggleSheet('shareSheet');};
+	$('dlBtn').onclick=e=>{e.stopPropagation();toggleSheet('dlSheet');};
+	document.addEventListener('click',e=>{ if(!e.target.closest('.sheet')&&!e.target.closest('.menu')) document.querySelectorAll('.sheet').forEach(x=>x.classList.remove('open')); });
+	if(!navigator.share) document.querySelector('[data-s=native]').style.display='none';
+	$('modalClose').onclick=()=>$('modal').classList.remove('open');
+	$('modal').onclick=e=>{ if(e.target===$('modal')) $('modal').classList.remove('open'); };
+
+	function toast(msg){ const t=$('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove('show'),2600); }
+	function currentCanvas(size){
+		if(state.use3d && three){ three.renderer.render(three.scene,activeCamera()); const c=document.createElement('canvas'); c.width=c.height=size;
+			const ctx=c.getContext('2d'); ctx.fillStyle=state.bg; ctx.fillRect(0,0,size,size); ctx.drawImage(three.renderer.domElement,0,0,size,size); return c; }
+		return renderTo(size);
+	}
+	const toBlob=(canvas,type,q)=>new Promise(r=>canvas.toBlob(r,type,q));
+	const blobToDataUrl=b=>new Promise(r=>{const rd=new FileReader();rd.onload=()=>r(rd.result);rd.readAsDataURL(b);});
+	const fileName=ext=>'qr-'+(state.text.replace(/[^a-z0-9]+/gi,'-').slice(0,30)||'code').toLowerCase()+'.'+ext;
+	async function save(blob,name){
+		const dataUrl=await blobToDataUrl(blob);
+		let started=false;
+		try{ const a=document.createElement('a'); a.href=dataUrl; a.download=name; a.rel='noopener'; document.body.appendChild(a); a.click(); a.remove(); started=true; }catch(e){}
+		const sandboxed = window.self!==window.top;
+		if(!started || sandboxed){
+			// Fallback for embedded previews that block downloads: show the file so it can be saved directly
+			$('modalImg').src=dataUrl; $('modalOpen').href=dataUrl; $('modalOpen').setAttribute('download',name);
+			$('modalText').textContent=started ? name+' – if the download did not start, right-click or long-press the image to save it, or open the page outside this preview.' : 'Right-click or long-press the image to save '+name+'.';
+			$('modal').classList.add('open');
+		}else toast('Downloaded '+name);
+	}
+	$('dlSheet').querySelectorAll('button[data-d]').forEach(b=>b.onclick=async()=>{
+		document.querySelectorAll('.sheet').forEach(x=>x.classList.remove('open'));
+		const size=+$('dlSize').value, fmt=b.dataset.d;
+		if(fmt==='svg'){ if(state.use3d){ toast('SVG is available for the flat code only – switch off 3D.'); return; } save(new Blob([svgString(size)],{type:'image/svg+xml'}),fileName('svg')); return; }
+		if(fmt==='pdf'){ printPdf(); return; }
+		const cv=currentCanvas(size);
+		if(fmt==='jpg'){ const c2=document.createElement('canvas'); c2.width=cv.width; c2.height=cv.height; const x=c2.getContext('2d'); x.fillStyle=state.frame==='none'?state.bg:state.frameColor; x.fillRect(0,0,c2.width,c2.height); x.drawImage(cv,0,0); save(await toBlob(c2,'image/jpeg',0.92),fileName('jpg')); return; }
+		if(fmt==='webp'){ save(await toBlob(cv,'image/webp',0.95),fileName('webp')); return; }
+		save(await toBlob(cv,'image/png'),fileName('png'));
+	});
+	function printPdf(){
+		const url=currentCanvas(1600).toDataURL('image/png');
+		const w=window.open('','_blank');
+		if(!w){ toast('Pop-up blocked – allow pop-ups or open the page outside this preview.'); return; }
+		w.document.write(`<title>${fileName('pdf')}</title><style>body{margin:0;display:grid;place-items:center;height:100vh}img{width:70vmin}p{position:fixed;bottom:16px;font:12px sans-serif;color:#555;padding:0 24px;text-align:center}@media print{p{display:none}}</style><img src="${url}"><p>Choose "Save as PDF" in the print dialog</p>`);
+		w.document.close(); setTimeout(()=>w.print(),400);
+	}
+	$('printBtn').onclick=printPdf;
+
+	$('shareSheet').querySelectorAll('button').forEach(b=>b.onclick=async()=>{
+		document.querySelectorAll('.sheet').forEach(x=>x.classList.remove('open'));
+		const how=b.dataset.s, txt=state.text.trim(), isUrl=/^https?:\/\//i.test(txt);
+		const msg=isUrl?'Scan this QR code or open: '+txt:'Scan this QR code: '+txt;
+		if(how==='native'){
+			const blob=await toBlob(currentCanvas(1024),'image/png'), file=new File([blob],fileName('png'),{type:'image/png'});
+			const data={title:'QR code',text:msg,files:[file]}; if(isUrl) data.url=txt;
+			try{ if(navigator.canShare&&navigator.canShare({files:[file]})) await navigator.share(data); else await navigator.share({title:'QR code',text:msg}); }catch(e){}
+			return;
+		}
+		if(how==='copyimg'){
+			try{ const blob=await toBlob(currentCanvas(1024),'image/png'); await navigator.clipboard.write([new ClipboardItem({'image/png':blob})]); toast('Image copied'); }
+			catch(e){ toast('Clipboard images not supported here – use Download.'); } return;
+		}
+		if(how==='copytext'){ try{ await navigator.clipboard.writeText(txt); toast('Content copied'); }catch(e){ toast('Clipboard blocked here'); } return; }
+		const enc=encodeURIComponent, links={
+			whatsapp:'https://wa.me/?text='+enc(msg),
+			telegram:'https://t.me/share/url?url='+enc(isUrl?txt:location.href)+'&text='+enc(msg),
+			x:'https://twitter.com/intent/tweet?text='+enc(msg),
+			email:'mailto:?subject='+enc('QR code')+'&body='+enc(msg+'\n\n(Attach the downloaded QR image to this email.)')
+		};
+		const w=window.open(links[how],'_blank','noopener'); if(!w) toast('Pop-up blocked – allow pop-ups for this page.');
+		else if(how!=='email') toast('Tip: download the image and attach it to your message.');
+	});
+
+	rerender();
+})();
+</script>
+</body>
+</html>
